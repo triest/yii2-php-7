@@ -52,7 +52,7 @@
                                     '<module:(article)>' => '<module>/default/index',
                                     '<module:(article)>/<id:\d+>' => '<module>/default/view',
                                     '<module:(article)>/edit/<id:\d+>' => '<module>/default/edit',
-                                    '<module:(article)>/create' => '<module>/default/create',
+                                    '<module:(article|)>/create' => '<module>/default/create',
                                     '<module:(article)>/delete/<id:\d+>' => '<module>/default/delete',
                             ],
                     ],

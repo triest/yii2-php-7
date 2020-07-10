@@ -6,6 +6,7 @@
     use app\models\ArticleForm;
 
     use Yii;
+    use yii\data\Pagination;
     use yii\filters\AccessControl;
     use yii\web\Controller;
 
@@ -16,19 +17,26 @@
     {
 
 
-
         /**
          * Renders the index view for the module
          * @return string
          */
         public function actionIndex()
         {
-            //   die("s1");
-            $articles = $customer = Article::find()
+
+            $query = Article::find();
+            $countQuery = clone $query;
+            $count = $query->count();
+            $pageSize = 3;
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
+
+            $models = $query->offset($pagination->offset)
+                    ->limit($pagination->limit)
                     ->all();
 
             return $this->render('index', [
-                    'articles' => $articles,
+                    'articles' => $models,
+                    'pagination' => $pagination,
             ]);
         }
 
@@ -39,7 +47,7 @@
         public function actionCreate()
         {
             //   die("s1");
-            if(Yii::$app->user->isGuest){
+            if (Yii::$app->user->isGuest) {
                 return $this->redirect('/login');
             }
 

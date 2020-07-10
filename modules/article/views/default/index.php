@@ -1,5 +1,8 @@
+<? use yii\widgets\LinkPager;
+
+?>
+
 <div class="Article-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
     <p>
         <a class="btn btn-primary" href="/article/create">Создать статью</a>
     </p>
@@ -13,4 +16,9 @@
             </div>
         </div>
     <?php endforeach; ?>
+    <?php
+        echo LinkPager::widget([
+                'pagination' => $pagination,
+        ]);
+    ?>
 </div>

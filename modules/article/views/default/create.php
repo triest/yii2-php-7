@@ -42,6 +42,6 @@
         </div>
 
         <?php ActiveForm::end(); ?>
-
+        <a href="/article" class="btn btn-primary">К списку статей</a>
     </div>
 </div>
