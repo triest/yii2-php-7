@@ -1,7 +1,7 @@
 <div class="Article-default-index">
     <h1><?= $this->context->action->uniqueId ?></h1>
     <p>
-        <a class="btn btn-primary" href="/article/create">Создать статью</a>
+        <a class="btn btn-primary" href="/article/edit/<?= $article->id ?>">Редактировать статью</a>
     </p>
 
     <div class="card mb-4">

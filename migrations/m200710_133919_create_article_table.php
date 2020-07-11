@@ -16,8 +16,8 @@
                     'id' => $this->primaryKey(),
                     'title' => $this->string()->null()->defaultValue(null),
                     'description' => $this->text()->null()->defaultValue(null),
-                    'updated_at' => $this->timestamp()->defaultValue(null),
-                    'created_at' => $this->timestamp(),
+               //     'updated_at' => $this->timestamp()->defaultValue(null),
+                 //   'created_at' => $this->timestamp(),
             ]);
         }
 

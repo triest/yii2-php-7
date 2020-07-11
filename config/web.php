@@ -48,12 +48,23 @@
                             'enablePrettyUrl' => true,
                             'showScriptName' => false,
                             'rules' => [
+                                    '<module:(admin)>/<type:>' => '<module>/<type>/index',
+                                    '<module:(admin)>/<type:>/<action:>' => '<module>/<type>/<action>',
                                     '<action:(login|logout)>' => 'site/<action>',
                                     '<module:(article)>' => '<module>/default/index',
                                     '<module:(article)>/<id:\d+>' => '<module>/default/view',
                                     '<module:(article)>/edit/<id:\d+>' => '<module>/default/edit',
-                                    '<module:(article|)>/create' => '<module>/default/create',
+                                    'GET <module:(article|)>/create' => '<module>/default/create',
+                                    'POST <module:(article|)>/create' => '<module>/default/create',
                                     '<module:(article)>/delete/<id:\d+>' => '<module>/default/delete',
+
+                                    'PUT,PATCH <module:(rest)>/<id:\d+>' => '<module>/default/update',
+                                    'DELETE <module:(rest)>/<id:\d+>' => '<module>/default/delete',
+                                    'POST <module:(rest)>' => '<module>/default/create',
+                                    'GET <module:(rest)>/<id:\d+>' => '<module>/default/view',
+                                    'GET,HEAD <module:(rest)>' => 'modules/rest/index',
+                                    'rest' => 'modules/rest/options',
+
                             ],
                     ],
 
@@ -64,6 +75,9 @@
                     ],
                     'article' => [
                             'class' => 'app\modules\article\Article',
+                    ],
+                    'rest' => [
+                            'class' => 'app\modules\rest\Rest',
                     ],
             ],
             'params' => $params,

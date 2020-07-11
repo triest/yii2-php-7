@@ -24,7 +24,7 @@
         public function actionIndex()
         {
 
-            $query = Article::find();
+            $query = Article::find()->orderBy('create_at', 'desc');
             $countQuery = clone $query;
             $count = $query->count();
             $pageSize = 3;
@@ -68,6 +68,25 @@
 
             $article = Article::findOne($id);
             return $this->render('view', ['article' => $article]);
+        }
+
+        public function actionEdit($id)
+        {
+
+            $review = Article::find()->where(['id' => $id])->one();
+            //если отправка формы
+            $post = Yii::$app->request->post();
+
+            if ($review->load($post) && $review->save()) {
+                return $this->actionView($id);
+            }
+
+
+            if ($review == null) {
+                return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+            } else {
+                return $this->render('edit', ['model' => $review]);
+            }
         }
 
     }
