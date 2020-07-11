@@ -3,6 +3,7 @@
     namespace app\modules\rest\controllers;
 
     use app\models\Article;
+    use app\models\ArticleForm;
     use Yii;
     use yii\web\BadRequestHttpException;
     use yii\web\Controller;
@@ -44,8 +45,9 @@
         public function actionIndex()
         {
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            die("44");
-            // return $this->render('index');
+             $articles=Article::find()->orderBy('create_at', 'desc')->all();
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            return $articles;
         }
 
         /**
@@ -55,15 +57,29 @@
         public function actionView($id)
         {
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return $id;
-            // return $this->render('index');
+            $article= Article::findOne($id);
+            if($article){
+               return $article;
+            }else{
+                return Yii::$app->response->statusCode = 403;
+            }
         }
 
         public function actionCreate()
         {
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return "s";
-            // return $this->render('index');
+            if (Yii::$app->request->isPost) {
+                $post = Yii::$app->request->post();
+                $article=new Article();
+                $article->title=$post["title"];
+                $article->description=$post["description"];
+                if($article->save()){
+                   return Yii::$app->response->statusCode = 201;
+                }else{
+                   return Yii::$app->response->statusCode = 400;
+                }
+            }
+            return Yii::$app->response->statusCode = 400;
         }
 
         public function actionUpdate($id)
@@ -71,15 +87,19 @@
 
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $review = Article::find()->where(['id' => $id])->one();
+            if(!$review){
+                return  Yii::$app->response->statusCode = 404;
+            }
             $post = Yii::$app->request->get();
 
             $review->title=$post["title"];
             $review->description=$post["description"];
             if($review->save()){
+                Yii::$app->response->statusCode = 204;
                 return $review;
             }
 
-            return false;
+            return  Yii::$app->response->statusCode = 400;
         }
 
         public function actionDelete($id)
@@ -87,9 +107,11 @@
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
             $review = Article::find()->where(['id' => $id])->one();
             if($review && $review->delete()){
-                return true;
+                Yii::$app->response->statusCode = 204;
+            }elseif (!$review){
+                Yii::$app->response->statusCode = 404;
             }else{
-                return false;
+                Yii::$app->response->statusCode = 400;
             }
 
         }

@@ -25,7 +25,6 @@
         {
 
             $query = Article::find()->orderBy('create_at', 'desc');
-            $countQuery = clone $query;
             $count = $query->count();
             $pageSize = 3;
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => $pageSize]);
@@ -58,14 +57,13 @@
                 if ($user = $model->create()) {
                     return $this->actionIndex();
                 }
-                die("s");
+
             }
             return $this->render('create', ['model' => $model]);
         }
 
         public function actionView($id)
         {
-
             $article = Article::findOne($id);
             return $this->render('view', ['article' => $article]);
         }
@@ -80,7 +78,6 @@
             if ($review->load($post) && $review->save()) {
                 return $this->actionView($id);
             }
-
 
             if ($review == null) {
                 return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
